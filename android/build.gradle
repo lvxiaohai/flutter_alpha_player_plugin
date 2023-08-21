@@ -24,13 +24,12 @@ allprojects {
     }
 }
 
-
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 28
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -51,5 +50,9 @@ android {
 }
 
 dependencies{
-     implementation 'com.github.bytedance:AlphaPlayer:1.0.6'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "androidx.arch.core:core-runtime:2.2.0"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.5.1"
 }
