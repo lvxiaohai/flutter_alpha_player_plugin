@@ -31,15 +31,15 @@ fragment float4 samplingShader(RasterizerData input [[stage_in]],
 {
     constexpr sampler textureSampler (mag_filter::linear, min_filter::linear);
     
-    float tcx = input.textureCoordinate.x / 2 + 0.5;
+    float tcy = input.textureCoordinate.y / 2;
     
-    float3 yuv = float3(textureY.sample(textureSampler, float2(tcx, input.textureCoordinate.y)).r,
-                          textureUV.sample(textureSampler, float2(tcx, input.textureCoordinate.y)).rg);
+    float3 yuv = float3(textureY.sample(textureSampler, float2(input.textureCoordinate.x, tcy)).r,
+                          textureUV.sample(textureSampler, float2(input.textureCoordinate.x, tcy)).rg);
     
     float3 rgb = convertMatrix->matrix * (yuv + convertMatrix->offset);
     
-    float3 alpha = float3(textureY.sample(textureSampler, float2(input.textureCoordinate.x / 2, input.textureCoordinate.y)).r,
-    textureUV.sample(textureSampler, float2(input.textureCoordinate.x / 2, input.textureCoordinate.y)).rg);
+    float3 alpha = float3(textureY.sample(textureSampler, float2(input.textureCoordinate.x, input.textureCoordinate.y / 2 + 0.5)).r,
+    textureUV.sample(textureSampler, float2(input.textureCoordinate.x, input.textureCoordinate.y / 2 + 0.5)).rg);
         
     float3 alphargb = convertMatrix->matrix * (alpha + convertMatrix->offset);
     return float4(rgb, alphargb.r);

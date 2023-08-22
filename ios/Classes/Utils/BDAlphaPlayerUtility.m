@@ -69,7 +69,7 @@ NSString *const BDAlphaPlayerErrorDomain = @"BDAlphaPlayerErrorDomain";
 + (CGRect)frameFromVideoSize:(CGSize)size renderSuperViewFrame:(CGRect)renderSuperViewFrame  resourceModel:(BDAlphaPlayerResourceModel *)resourceModel
 {
     CGFloat layerRatio = renderSuperViewFrame.size.width / renderSuperViewFrame.size.height;
-    CGFloat imgRatio = size.width * 0.5 / size.height;
+    CGFloat imgRatio = size.width / (size.height / 2);
     CGRect rationRect = [BDAlphaPlayerUtility scaleLayerRatio:layerRatio imgRatio:imgRatio mode:resourceModel.currentOrientationResourceInfo.contentMode];
     CGRect renderRect  = [BDAlphaPlayerUtility transFrameFromRationRect:rationRect superViewFrame:renderSuperViewFrame];
     return renderRect;
