@@ -36,12 +36,12 @@ class VideoRenderer(val alphaVideoView: IAlphaVideoView) : IRender {
      * coordinates and window coordinates. It will changed for {@link ScaleType}
      * by {@link TextureCropUtil}.
      */
-    private var halfRightVerticeData = floatArrayOf(
+    private var halfTopVerticeData = floatArrayOf(
         // X, Y, Z, U, V
-        -1.0f, -1.0f, 0f, 0.5f, 0f,
-        1.0f, -1.0f, 0f, 1f, 0f,
-        -1.0f, 1.0f, 0f, 0.5f, 1f,
-        1.0f, 1.0f, 0f, 1f, 1f
+        -1f, -1f, 0f, 0f, 0f,
+        1f, -1f, 0f, 1f, 0f,
+        -1f, 1f, 0f, 0f, 0.5f,
+        1f, 1f, 0f, 1f, 0.5f
     )
 
     private var triangleVertices: FloatBuffer
@@ -70,9 +70,9 @@ class VideoRenderer(val alphaVideoView: IAlphaVideoView) : IRender {
     private var scaleType = ScaleType.ScaleAspectFill
 
     init {
-        triangleVertices = ByteBuffer.allocateDirect(halfRightVerticeData.size * FLOAT_SIZE_BYTES)
+        triangleVertices = ByteBuffer.allocateDirect(halfTopVerticeData.size * FLOAT_SIZE_BYTES)
             .order(ByteOrder.nativeOrder()).asFloatBuffer()
-        triangleVertices.put(halfRightVerticeData).position(0)
+        triangleVertices.put(halfTopVerticeData).position(0)
         Matrix.setIdentityM(sTMatrix, 0)
     }
 
@@ -87,11 +87,11 @@ class VideoRenderer(val alphaVideoView: IAlphaVideoView) : IRender {
             return
         }
 
-        halfRightVerticeData = TextureCropUtil.calculateHalfRightVerticeData(scaleType,
+        halfTopVerticeData = TextureCropUtil.calculateHalfTopVerticeData(scaleType,
             viewWidth, viewHeight, videoWidth, videoHeight)
-        triangleVertices = ByteBuffer.allocateDirect(halfRightVerticeData.size * FLOAT_SIZE_BYTES)
+        triangleVertices = ByteBuffer.allocateDirect(halfTopVerticeData.size * FLOAT_SIZE_BYTES)
             .order(ByteOrder.nativeOrder()).asFloatBuffer()
-        triangleVertices.put(halfRightVerticeData).position(0)
+        triangleVertices.put(halfTopVerticeData).position(0)
     }
 
     override fun setSurfaceListener(surfaceListener: IRender.SurfaceListener) {

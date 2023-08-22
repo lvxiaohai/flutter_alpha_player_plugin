@@ -330,11 +330,13 @@ class PlayerController(val context: Context, owner: LifecycleOwner, val alphaVid
     @WorkerThread
     private fun parseVideoSize() {
         val videoInfo = mediaPlayer.getVideoInfo()
-        alphaVideoView.measureInternal((videoInfo.videoWidth / 2).toFloat(), videoInfo.videoHeight.toFloat())
+        val width = videoInfo.videoWidth
+        val height = videoInfo.videoHeight / 2
+        alphaVideoView.measureInternal(width.toFloat(), height.toFloat())
 
         val scaleType = alphaVideoView.getScaleType()
         mainHandler.post {
-            mPlayerAction?.onVideoSizeChanged(videoInfo.videoWidth / 2, videoInfo.videoHeight, scaleType)
+            mPlayerAction?.onVideoSizeChanged(width, height, scaleType)
         }
     }
 

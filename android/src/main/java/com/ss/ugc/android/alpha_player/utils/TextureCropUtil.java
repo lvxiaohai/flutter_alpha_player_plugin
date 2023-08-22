@@ -8,9 +8,9 @@ import com.ss.ugc.android.alpha_player.model.ScaleType;
  */
 public class TextureCropUtil {
 
-    public static float[] calculateHalfRightVerticeData(ScaleType scaleType,
-                                                        float viewWidth, float viewHeight,
-                                                        float videoWidth, float videoHeight) {
+    public static float[] calculateHalfTopVerticeData(ScaleType scaleType,
+                                                      float viewWidth, float viewHeight,
+                                                      float videoWidth, float videoHeight) {
         float[] result;
         float currentRatio = viewWidth / viewHeight;
         float videoRatio = videoWidth / videoHeight;
@@ -128,22 +128,22 @@ public class TextureCropUtil {
     }
 
     private static float[] getZoomData(float leftZoomRatio, float topZoomRatio, float rightZoomRatio, float bottomZoomRatio) {
-        return new float[] {
+        return new float[]{
                 // X, Y, Z, U, V
-                -1.0f + leftZoomRatio * 2, -1.0f + bottomZoomRatio * 2, 0, 0.5f, 0.f,
-                1.0f - rightZoomRatio * 2, -1.0f + bottomZoomRatio * 2, 0, 1.f, 0.f,
-                -1.0f + leftZoomRatio * 2, 1.0f - topZoomRatio * 2, 0, 0.5f, 1.f,
-                1.0f - rightZoomRatio * 2, 1.0f - topZoomRatio * 2, 0, 1.f, 1.f,
+                -1 + leftZoomRatio * 2, -1 + bottomZoomRatio * 2, 0, 0, 0,
+                1 - rightZoomRatio * 2, -1 + bottomZoomRatio * 2, 0, 1, 0,
+                -1 + leftZoomRatio * 2, 1 - topZoomRatio * 2, 0, 0, 0.5f,
+                1 - rightZoomRatio * 2, 1 - topZoomRatio * 2, 0, 1, 0.5f,
         };
     }
 
     private static float[] getCropData(float leftCropRatio, float topCropRatio, float rightCropRatio, float bottomCropRatio) {
-        return new float[] {
+        return new float[]{
                 // X, Y, Z, U, V
-                -1.0f,  -1.0f,  0, 0.5f + leftCropRatio / 2,    0.f + bottomCropRatio,
-                1.0f,   -1.0f,  0, 1.0f - rightCropRatio / 2,   0.f + bottomCropRatio,
-                -1.0f,  1.0f,   0, 0.5f + leftCropRatio / 2,    1.f - topCropRatio,
-                1.0f,   1.0f,   0, 1.0f - rightCropRatio / 2,   1.f - topCropRatio,
+                -1, -1, 0, 0 + leftCropRatio, 0 + bottomCropRatio / 2,
+                1, -1, 0, 1 - rightCropRatio, 0 + bottomCropRatio / 2,
+                -1, 1, 0, 0 + leftCropRatio, 0.5f - topCropRatio / 2,
+                1, 1, 0, 1 - rightCropRatio, 0.5f - topCropRatio / 2,
         };
     }
 }
