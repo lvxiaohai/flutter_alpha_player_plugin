@@ -4,7 +4,7 @@
 //
 //  Created by ZhgSignorino on 2023/4/24.
 //
-import BDAlphaPlayer
+
 import UIKit
 
 /// 回调事件
@@ -75,6 +75,16 @@ class NG_AlphaPlayerView: UIView,BDAlphaPlayerMetalViewDelegate {
     }
     
     // MARK: - public
+    
+    func play(filePath: String?, playerOrientation: Int) {
+        if (filePath == nil) {
+            print("filePath is null")
+            return
+        }
+        if playerMetalView == nil {
+            __initMetalView()
+        }
+    }
     
     /// 开始播放视频
      // @param filePath /data/user/0/nigo/gift/file

@@ -41,6 +41,14 @@ class FlutterAlphaViewPlugin: NSObject,FlutterPlatformView,NG_AlphaPlayerCallBac
     /// 接收flutter发来的消息
     func handleMethod(call: FlutterMethodCall, result: FlutterResult) {
         switch call.method {
+        case "play":
+            if (call.arguments is [String:Any] == false) {return};
+            let params:Dictionary = call.arguments as? [String: Any] ?? [String:Any]();
+            if params.isEmpty { return };
+            let path = params["path"]
+            self.playerNativeView.play(filePath: path as? String, playerOrientation: 0)
+            result(0)
+            break
         case "playVideo": /// 开始播放
             if (call.arguments is [String:Any] == false) {return};
             let params:Dictionary = call.arguments as? [String: Any] ?? [String:Any]();

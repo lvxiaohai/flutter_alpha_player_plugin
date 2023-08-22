@@ -13,9 +13,11 @@ A new Flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files     = "Classes/*.{h,m,mm,swift}", "Classes/**/*.{h,m,mm,swift}"
+  s.resource_bundles = {
+      'BDAlphaPlayer' => ['Classes/**/*.metal']
+  }
   s.dependency 'Flutter'
-  s.dependency 'BDAlphaPlayer', '= 1.2.2'
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice.
