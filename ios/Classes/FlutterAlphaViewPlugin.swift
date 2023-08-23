@@ -32,6 +32,7 @@ class FlutterAlphaViewPlugin: NSObject,FlutterPlatformView,NG_AlphaPlayerCallBac
     
     func view() -> UIView {
         playerNativeView.frame = _frame!;
+        playerNativeView.clipsToBounds = true;
         return playerNativeView
     }
     
