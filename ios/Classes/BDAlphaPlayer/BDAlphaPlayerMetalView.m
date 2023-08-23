@@ -93,6 +93,7 @@
 
 - (void)stop
 {
+    [self.audioPlayer pause];
     [self destroyMTKView];
 }
 

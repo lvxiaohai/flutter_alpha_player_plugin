@@ -25,7 +25,7 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
         _arguments = arguments
         _pluginRegistrar = pluginRegistrar
         /// 建立通信通道 用来 监听Flutter 的调用和 调用Fluttter 方法 这里的名称要和Flutter 端保持一致
-        _methodChannel = FlutterMethodChannel(name: "flutter_alpha_player_plugin", binaryMessenger: pluginRegistrar.messenger())
+        _methodChannel = FlutterMethodChannel(name: "flutter_alpha_player_plugin_\(viewIdentifier)", binaryMessenger: pluginRegistrar.messenger())
         _methodChannel?.setMethodCallHandler(handleMethod)
     }
 
@@ -40,7 +40,8 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
     /// 接收flutter发来的消息
     func handleMethod(call: FlutterMethodCall, result: FlutterResult) {
         switch call.method {
-        case "playVideo": /// 开始播放
+        /// 开始播放
+        case "play":
             if call.arguments is [String: Any] == false {
                 return
             }
@@ -48,21 +49,25 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
             if params.isEmpty {
                 return
             }
-            let path = params["path"] as? String ?? ""
+            let path = params["filePath"] as? String ?? ""
             let scaleType = params["scaleType"] as? Int
             playerNativeView.play(path: path, scaleType: scaleType)
             result(0)
             break
-        case "attachView": /// 同步视图
+        /// 停止播放
+        case "stop": fallthrough
+        case "release":
+            playerNativeView.playerStopWithFinishPlayingCallback()
+            result(0)
+            break
+        /// 同步视图
+        case "attachView":
             playerNativeView.addAlphaPlayerViewToParentView()
             result(0)
             break
-        case "detachView": /// 移除视图
+        /// 移除视图
+        case "detachView":
             playerNativeView.removeAlphaPlayerViewFromSuperView()
-            result(0)
-            break
-        case "releasePlayer": /// 停止播放
-            playerNativeView.playerStopWithFinishPlayingCallback()
             result(0)
             break
         default:
@@ -75,7 +80,7 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
 
     // @param method 方法名称，唯一关系绑定，
     // @param arguments 参数或者数据 目前默认json字符串
-    private func _iosCallFlutterMethodWithParams(method: String, arguments: Any) {
+    private func _iosCallFlutterMethodWithParams(method: String, arguments: Any?) {
         _methodChannel?.invokeMethod(method, arguments: arguments)
     }
 
@@ -99,12 +104,12 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
 
     /// 开始播放
     func alphaPlayerStartPlay() {
-        _iosCallFlutterMethodWithParams(method: "startAction", arguments: _jsonEncodeMethod(dic: ["code": "0", "fun": "startAction"]) as Any)
+        _iosCallFlutterMethodWithParams(method: "play", arguments: nil)
     }
 
     /// 播放结束回调 isNormalFinsh 是否正常播放结束 （True 是  false 播放报错）
     func alphaPlayerDidFinishPlaying(isNormalFinsh: Bool, errorStr: String?) {
-        _iosCallFlutterMethodWithParams(method: "endAction", arguments: _jsonEncodeMethod(dic: ["code": "-1", "fun": "endAction"]) as Any)
+        _iosCallFlutterMethodWithParams(method: "stop", arguments: nil)
     }
 
     /// 回调每一帧的持续时间

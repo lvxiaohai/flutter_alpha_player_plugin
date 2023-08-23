@@ -5,13 +5,12 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
-import com.example.flutter_alpha_player_plugin.NativeAlphaPlayer
 
-class NativeAlphaPlayerFactory(binaryMessenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE){
+class NativeAlphaPlayerFactory(binaryMessenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     private val mBinaryMessenger = binaryMessenger;
 
     override fun create(context: Context?, viewId: Int, args: Any?): PlatformView {
         val params = args as Map<String, Any>?
-        return NativeAlphaPlayer(mBinaryMessenger,context,viewId,params)
+        return NativeAlphaPlayer(mBinaryMessenger, context, viewId, params)
     }
 }
