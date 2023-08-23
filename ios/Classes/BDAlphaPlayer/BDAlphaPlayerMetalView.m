@@ -73,6 +73,15 @@
     [self play];
 }
 
+- (void)playWithMetalConfiguration:(BDAlphaPlayerMetalConfiguration *)configuration andResourceModel:(BDAlphaPlayerResourceModel *)resourceModel
+{
+    NSAssert(!CGRectIsEmpty(configuration.renderSuperViewFrame), @"You need to initialize renderSuperViewFrame before playing");
+    self.renderSuperViewFrame = configuration.renderSuperViewFrame;
+    self.model = resourceModel;
+    [self configRenderViewContentModeFromModel];
+    [self play];
+}
+
 - (NSTimeInterval)totalDurationOfPlayingEffect
 {
     if (self.output) {

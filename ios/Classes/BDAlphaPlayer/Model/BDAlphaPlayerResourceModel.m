@@ -17,6 +17,15 @@
 
 @implementation BDAlphaPlayerResourceModel
 
++ (instancetype)resourceModelWithOrientation: (BDAlphaPlayerOrientation)orientation portraitResourceInfo: (BDAlphaPlayerResourceInfo *) portraitResourceInfo landscapeResourceInfo: (BDAlphaPlayerResourceInfo *) landscapeResourceInfo {
+    BDAlphaPlayerResourceModel *resourceModel = [BDAlphaPlayerResourceModel new];
+    resourceModel.currentOrientation = orientation;
+    resourceModel.portraitResourceInfo = portraitResourceInfo;
+    resourceModel.landscapeResourceInfo = landscapeResourceInfo;
+    resourceModel.currentOrientationResourceInfo = orientation == BDAlphaPlayerOrientationPortrait ? portraitResourceInfo : landscapeResourceInfo;
+    return resourceModel;
+}
+
 + (instancetype)resourceModelFromDirectory:(NSString *)directory orientation:(BDAlphaPlayerOrientation)orientation error:(NSError **)error
 {
     BDAlphaPlayerResourceModel *resourceModel = nil;

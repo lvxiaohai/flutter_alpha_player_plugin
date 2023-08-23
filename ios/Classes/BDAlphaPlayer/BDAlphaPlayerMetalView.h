@@ -42,6 +42,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playWithMetalConfiguration:(BDAlphaPlayerMetalConfiguration *)configuration;
 
 /**
+ @brief 使用给定configuration与resourceModle播放
+ */
+- (void)playWithMetalConfiguration:(BDAlphaPlayerMetalConfiguration *)configuration andResourceModel:(BDAlphaPlayerResourceModel *)resourceModle;
+
+/**
  @brief Get total duration of currently displaying MP4.Duration is only available after [BDAlphaPlayerMetalView playWithMetalConfiguration:] method called.
 
  @seealso [BDAlphaPlayerMetalView playWithMetalConfiguration:]

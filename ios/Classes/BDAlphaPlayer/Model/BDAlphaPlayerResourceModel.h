@@ -38,4 +38,9 @@
 */
 + (instancetype)resourceModelFromDirectory:(NSString *)directory orientation:(BDAlphaPlayerOrientation)orientation error:(NSError **)error;
 
+/**
+ @brief 获取实例
+ */
++ (instancetype)resourceModelWithOrientation: (BDAlphaPlayerOrientation)orientation portraitResourceInfo: (BDAlphaPlayerResourceInfo *) portraitResourceInfo landscapeResourceInfo: (BDAlphaPlayerResourceInfo *) landscapeResourceInfo;
+
 @end
