@@ -39,7 +39,7 @@ import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.example.flutter_alpha_player_plugin.BuildConfig;
+import com.lyg.flutter_alpha_player_plugin.BuildConfig;
 
 public class GLTextureView
         extends TextureView

@@ -21,7 +21,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.flutter_alpha_player_plugin
+        package: com.lyg.flutter_alpha_player_plugin
         pluginClass: FlutterAlphaPlayerPlugin
       ios:
         pluginClass: FlutterAlphaPlayerPlugin

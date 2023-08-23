@@ -1,8 +1,8 @@
 PODS:
-  - BDAlphaPlayer (1.2.2)
   - Flutter (1.0.0)
   - flutter_alpha_player_plugin (0.0.1):
-    - BDAlphaPlayer (= 1.2.2)
+    - Flutter
+  - image_picker_ios (0.0.1):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
@@ -10,24 +10,23 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_alpha_player_plugin (from `.symlinks/plugins/flutter_alpha_player_plugin/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
-
-SPEC REPOS:
-  trunk:
-    - BDAlphaPlayer
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_alpha_player_plugin:
     :path: ".symlinks/plugins/flutter_alpha_player_plugin/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
 
 SPEC CHECKSUMS:
-  BDAlphaPlayer: 3b31756760ea37b9710bfb36a18b431ad05f6da7
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_alpha_player_plugin: a75cd87a2cfe8d9a890d17e0c94a7545dff38555
+  flutter_alpha_player_plugin: 65c07a97edc292fe966424d56448a1d3f57f68af
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
