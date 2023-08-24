@@ -27,6 +27,8 @@ interface IPlayerController {
 
     fun setPlayerAction(playerAction: IPlayerAction)
 
+    fun getPlayerAction(): IPlayerAction?
+
     fun setMonitor(monitor: IMonitor)
 
     fun attachAlphaView(parentView: ViewGroup)

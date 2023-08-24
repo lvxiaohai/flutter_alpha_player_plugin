@@ -17,6 +17,9 @@ protocol FlutterAlphaPlayerCallBackActionDelegate {
 
     /// 回调每一帧的持续时间
     func videoFrameCallBack(duration: TimeInterval)
+    
+    /// 错误回调
+    func errorAction(code: Int, message: String)
 }
 
 /// 播放器
@@ -73,6 +76,7 @@ class FlutterAlphaPlayerView: UIView, BDAlphaPlayerMetalViewDelegate {
     func play(filePath: String?, playerOrientation: Int) {
         if filePath == nil {
             print("filePath is null")
+            
             return
         }
         if playerMetalView == nil {
@@ -84,10 +88,6 @@ class FlutterAlphaPlayerView: UIView, BDAlphaPlayerMetalViewDelegate {
     // @param path 文件路径
     // @param scaleType 缩放模式
     func play(path: String, scaleType: Int?) {
-        if path.isEmpty {
-            print("path is empty")
-            return
-        }
         if playerMetalView == nil {
             __initMetalView()
         }

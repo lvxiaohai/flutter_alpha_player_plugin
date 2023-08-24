@@ -41,6 +41,14 @@ internal class NativeAlphaPlayer(
                 override fun startAction() {
                     _onFlutterMethodCall("play", null)
                 }
+
+                override fun errorAction(code: Int, message: String) {
+                    val map = hashMapOf(
+                            "code" to code,
+                            "message" to message
+                    )
+                    _onFlutterMethodCall("error", map)
+                }
             }, object : IMonitor {
                 override fun monitor(
                         result: Boolean,

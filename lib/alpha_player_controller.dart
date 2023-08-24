@@ -1,10 +1,32 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
+typedef OnPlayCallback = void Function();
+typedef OnStopCallback = void Function();
+typedef OnErrorCallback = void Function(int code, String error);
+
+// 透明视频播放器控制器
 class AlphaPlayerController extends ChangeNotifier {
   String? filePath;
   AlphaPlayerScaleType? scaleType;
 
   AlphaPlayerEvent? event;
+
+  // view创建完成
+  PlatformViewCreatedCallback? onViewCreated;
+  // 播放开始的回调
+  OnPlayCallback? onPlay;
+  // 播放完成的回调
+  OnStopCallback? onStop;
+  // 播放错误的回调
+  OnErrorCallback? onError;
+
+  AlphaPlayerController({
+    this.onViewCreated,
+    this.onPlay,
+    this.onStop,
+    this.onError,
+  });
 
   /// 播放视频
   /// [filePath] 视频路径

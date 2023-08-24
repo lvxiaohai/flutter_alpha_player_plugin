@@ -27,4 +27,9 @@ interface IPlayerAction {
      * Called when the end of a media source is reached during playback.
      */
     fun endAction()
+
+    /**
+     * Called when the media source is paused.
+     */
+    fun errorAction(code: Int, message: String)
 }

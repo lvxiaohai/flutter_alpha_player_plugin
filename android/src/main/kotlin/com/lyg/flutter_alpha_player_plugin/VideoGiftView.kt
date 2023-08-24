@@ -17,7 +17,6 @@ import com.ss.ugc.android.alpha_player.controller.PlayerController
 import com.ss.ugc.android.alpha_player.model.AlphaVideoViewType
 import com.ss.ugc.android.alpha_player.model.Configuration
 import com.ss.ugc.android.alpha_player.model.DataSource
-import com.ss.ugc.android.alpha_player.model.ScaleType
 import com.ss.ugc.android.alpha_player.player.DefaultSystemPlayer
 import java.io.File
 
@@ -52,41 +51,11 @@ class VideoGiftView : FrameLayout, LifecycleOwner {
         addView(mVideoContainer)
     }
 
-    private var playListener: IPlayerAction = object : IPlayerAction {
-        override fun endAction() {
-            Log.e(TAG, "endAction: ")
-        }
-
-        override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int, scaleType: ScaleType) {
-            Log.e(TAG, "onVideoSizeChanged: ")
-        }
-
-        override fun startAction() {
-            Log.e(TAG, "startAction: ")
-        }
-
-    }
-
-    private val monitor2: IMonitor = object : IMonitor {
-        override fun monitor(
-                result: Boolean,
-                playType: String,
-                what: Int,
-                extra: Int,
-                errorInfo: String
-        ) {
-            Log.e(
-                    TAG,
-                    "call monitor(), state: $result, playType = $playType, what = $what, extra = $extra, errorInfo 错误信息展示 = $errorInfo"
-            )
-        }
-    }
-
     //初始化播放器的控制器
     fun initPlayerController(
             context: Context,
-            playerAction: IPlayerAction = playListener,
-            monitor: IMonitor = monitor2
+            playerAction: IPlayerAction,
+            monitor: IMonitor
     ) {
         val configuration = Configuration(context, this)
         // 支持GLSurfaceView&GLTextureView, 默认使用GLSurfaceView
@@ -106,7 +75,9 @@ class VideoGiftView : FrameLayout, LifecycleOwner {
      */
     fun start(filePath: String?, portraitScaleType: Int = 2, landscapeScaleType: Int = 8, isLooping: Boolean? = false) {
         if (TextUtils.isEmpty(filePath)) {
-            Log.e(TAG, "startVideoGift: filePath is null $filePath")
+            val message = "filePath is empty or null."
+            Log.e(TAG, message)
+            mPlayerController.getPlayerAction()?.errorAction(1001, message)
             return
         }
         val file = File(filePath)

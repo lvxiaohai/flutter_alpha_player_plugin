@@ -20,8 +20,34 @@ class _MyAppState extends State<MyApp> {
   bool isDownload = false;
   final ImagePicker _picker = ImagePicker();
   String? videoPath;
-  AlphaPlayerController controller = AlphaPlayerController();
-  AlphaPlayerController controller2 = AlphaPlayerController();
+  AlphaPlayerController controller = AlphaPlayerController(
+    onViewCreated: (id) {
+      print("==== onCreated $id");
+    },
+    onPlay: () {
+      print("==== onPlay");
+    },
+    onStop: () {
+      print("==== onStop");
+    },
+    onError: (code, error) {
+      print("==== onError $code $error");
+    },
+  );
+  AlphaPlayerController controller2 = AlphaPlayerController(
+    onViewCreated: (id) {
+      print("==== onCreated2 $id");
+    },
+    onPlay: () {
+      print("==== onPlay2");
+    },
+    onStop: () {
+      print("==== onStop2");
+    },
+    onError: (code, error) {
+      print("==== onError2 $code $error");
+    },
+  );
 
   @override
   void initState() {
@@ -74,17 +100,15 @@ class _MyAppState extends State<MyApp> {
                         },
                       ),
                       ElevatedButton(
-                        child: const Text("停止"),
+                        child: const Text("停止1"),
                         onPressed: () async {
                           controller.stop();
-                          controller2.stop();
                         },
                       ),
                       ElevatedButton(
-                        child: const Text("释放"),
+                        child: const Text("释放1"),
                         onPressed: () async {
                           controller.release();
-                          controller2.release();
                         },
                       ),
                     ],
@@ -106,15 +130,6 @@ class _MyAppState extends State<MyApp> {
                     height: 300,
                     child: AlphaPlayerView(
                       controller: controller,
-                      onViewCreated: (id) {
-                        print("onCreated $id");
-                      },
-                      onPlay: () {
-                        print("onPlay");
-                      },
-                      onStop: () {
-                        print("onStop");
-                      },
                     ),
                   ),
                 ),
@@ -134,25 +149,20 @@ class _MyAppState extends State<MyApp> {
                     height: 200,
                     child: AlphaPlayerView(
                       controller: controller2,
-                      onViewCreated: (id) {
-                        print("onCreated2 $id");
-                      },
-                      onPlay: () {
-                        print("onPlay2");
-                      },
-                      onStop: () {
-                        print("onStop2");
-                      },
                     ),
                   ),
                 ),
               ),
-              // Container(
-              //   color: const Color.fromRGBO(0, 0, 0, 0.1),
-              //   width: 100,
-              //   height: 100,
-              //   child: const Text("测试层级"),
-              // )
+              Positioned(
+                top: 300,
+                left: 150,
+                child: Container(
+                  color: const Color.fromRGBO(0, 0, 0, 0.1),
+                  width: 100,
+                  height: 100,
+                  child: const Text("测试层级"),
+                ),
+              )
             ],
           ),
         ),

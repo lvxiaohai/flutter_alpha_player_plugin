@@ -42,14 +42,14 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
         switch call.method {
         /// 开始播放
         case "play":
-            if call.arguments is [String: Any] == false {
+            guard let params = call.arguments as? [String: Any],
+                  let path = params["filePath"] as? String,
+                  !path.isEmpty else {
+                errorAction(code: 1001, message: "filePath is empty or null.")
+                result(0)
                 return
             }
-            let params = call.arguments as? [String: Any] ?? [String: Any]()
-            if params.isEmpty {
-                return
-            }
-            let path = params["filePath"] as? String ?? ""
+
             let scaleType = params["scaleType"] as? Int
             playerNativeView.play(path: path, scaleType: scaleType)
             result(0)
@@ -84,22 +84,6 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
         _methodChannel?.invokeMethod(method, arguments: arguments)
     }
 
-    /// JSON 格式化
-    private func _jsonEncodeMethod(dic: Dictionary<String, Any>) -> String? {
-        if let json_data = try? JSONSerialization.data(withJSONObject: dic, options: JSONSerialization.WritingOptions.prettyPrinted) {
-            return _jsonStringEncodeMethod(jsonData: json_data as NSData)
-        }
-        return nil
-    }
-
-    /// JSON 字符串
-    private func _jsonStringEncodeMethod(jsonData: NSData) -> String? {
-        if let JSONString = String(data: jsonData as Data, encoding: String.Encoding.utf8) {
-            return JSONString
-        }
-        return nil
-    }
-
     // MARK: - NG_AlphaPlayerCallBackActionDelegate
 
     /// 开始播放
@@ -114,6 +98,14 @@ class FlutterAlphaViewPlugin: NSObject, FlutterPlatformView, FlutterAlphaPlayerC
 
     /// 回调每一帧的持续时间
     func videoFrameCallBack(duration: TimeInterval) {
+    }
+
+    /// 错误回调
+    func errorAction(code: Int, message: String) {
+        _iosCallFlutterMethodWithParams(method: "error", arguments: [
+            "code": code,
+            "message": message,
+        ] as [String : Any])
     }
 
     // MARK: - lazy

@@ -8,26 +8,14 @@ import 'alpha_player_controller.dart';
 const _viewType = "flutter_alpha_player";
 const String _channelName = "flutter_alpha_player_plugin_";
 
-typedef OnPlayCallback = void Function();
-typedef OnStopCallback = void Function();
-
 // 透明视频播放器
 class AlphaPlayerView extends StatefulWidget {
   final AlphaPlayerController controller;
-  // view创建完成
-  final PlatformViewCreatedCallback? onViewCreated;
-  // 播放开始的回调
-  final OnPlayCallback? onPlay;
-  // 播放完成的回调
-  final OnStopCallback? onStop;
 
-  const AlphaPlayerView(
-      {Key? key,
-      required this.controller,
-      this.onViewCreated,
-      this.onPlay,
-      this.onStop})
-      : super(key: key);
+  const AlphaPlayerView({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   State<AlphaPlayerView> createState() => _AlphaPlayerViewState();
@@ -70,14 +58,24 @@ class _AlphaPlayerViewState extends State<AlphaPlayerView> {
 
   void _onPlatformViewCreated(int id) {
     methodChannel = MethodChannel('$_channelName$id');
-    widget.onViewCreated?.call(id);
+    widget.controller.onViewCreated?.call(id);
+
     methodChannel?.setMethodCallHandler((call) async {
       switch (call.method) {
         case "play":
-          widget.onPlay?.call();
+          widget.controller.onPlay?.call();
           break;
         case "stop":
-          widget.onStop?.call();
+          widget.controller.onStop?.call();
+          break;
+        case "error":
+          var code = 0;
+          var message = "";
+          if (call.arguments is Map) {
+            code = call.arguments['code'] ?? 0;
+            message = call.arguments['message'] ?? "";
+          }
+          widget.controller.onError?.call(code, message);
           break;
         default:
           break;
