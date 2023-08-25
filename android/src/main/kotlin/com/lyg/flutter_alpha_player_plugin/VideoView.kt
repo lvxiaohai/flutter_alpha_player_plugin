@@ -24,7 +24,7 @@ import java.io.File
  * 视频动画展示界面
  */
 @SuppressLint("ResourceType")
-class VideoGiftView : FrameLayout, LifecycleOwner {
+class VideoView : FrameLayout, LifecycleOwner {
 
     constructor(context: Context) : super(context)
 
@@ -33,7 +33,7 @@ class VideoGiftView : FrameLayout, LifecycleOwner {
     constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attributeSet, defStyleAttr)
 
     companion object {
-        const val TAG = "VideoGiftView"
+        const val TAG = "VideoView"
     }
 
     private var mVideoContainer: RelativeLayout
@@ -67,7 +67,7 @@ class VideoGiftView : FrameLayout, LifecycleOwner {
     }
 
     /**
-     * 开始播放尾
+     * 开始播放
      *
      * @param filePath 文件路径
      * @param portraitScaleType 设置竖向参数 2
@@ -129,6 +129,11 @@ class VideoGiftView : FrameLayout, LifecycleOwner {
     fun stop() {
         mPlayerController.stop()
         detachView()
+    }
+
+    // reset 能释放内存
+    fun reset() {
+        mPlayerController.reset()
     }
 
     override fun getLifecycle(): Lifecycle {

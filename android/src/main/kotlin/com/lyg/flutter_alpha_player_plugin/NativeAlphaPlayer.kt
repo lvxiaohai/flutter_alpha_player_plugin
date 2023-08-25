@@ -12,7 +12,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
-///原生界面需要实现PlatformView
+/// 原生界面需要实现PlatformView
 internal class NativeAlphaPlayer(
         binaryMessenger: BinaryMessenger,
         context: Context?,
@@ -21,17 +21,19 @@ internal class NativeAlphaPlayer(
 
     private var methodResult: MethodChannel.Result? = null
     private val mContext: Context? = context
-    private lateinit var alphaPlayer: VideoGiftView
+    private lateinit var playerView: VideoView
     private lateinit var channel: MethodChannel
     private var handler: Handler = Handler(Looper.getMainLooper())
 
 
     init {
         mContext?.let {
-            alphaPlayer = VideoGiftView(it)
-            alphaPlayer.initPlayerController(it, object : IPlayerAction {
+            playerView = VideoView(it)
+            playerView.initPlayerController(it, object : IPlayerAction {
                 override fun endAction() {
-                    _onFlutterMethodCall("stop", null)
+                    // 主动释放内存
+                    playerView.reset()
+                    callFlutterMethod("stop", null)
                 }
 
                 override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int, scaleType: ScaleType) {
@@ -39,7 +41,7 @@ internal class NativeAlphaPlayer(
                 }
 
                 override fun startAction() {
-                    _onFlutterMethodCall("play", null)
+                    callFlutterMethod("play", null)
                 }
 
                 override fun errorAction(code: Int, message: String) {
@@ -47,7 +49,7 @@ internal class NativeAlphaPlayer(
                             "code" to code,
                             "message" to message
                     )
-                    _onFlutterMethodCall("error", map)
+                    callFlutterMethod("error", map)
                 }
             }, object : IMonitor {
                 override fun monitor(
@@ -61,14 +63,14 @@ internal class NativeAlphaPlayer(
                 }
             }
             )
-            alphaPlayer.attachView()
+            playerView.attachView()
 
             channel = MethodChannel(binaryMessenger, "flutter_alpha_player_plugin_${id}")
             channel.setMethodCallHandler(this);
         }
     }
 
-    //MethodChannel 回调 Flutter-》Android
+    // MethodChannel 回调 Flutter-》Android
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         methodResult = result
         when (call.method) {
@@ -76,27 +78,29 @@ internal class NativeAlphaPlayer(
             "play" -> {
                 val path = call.argument<String>("filePath")
                 val scaleType = call.argument<Int?>("scaleType") ?: 2
-                alphaPlayer.start(path, scaleType, scaleType, false)
+                playerView.start(path, scaleType, scaleType, false)
                 result.success(0)
             }
             // 停止
             "stop" -> {
-                alphaPlayer.stop()
+                playerView.stop()
+                // 主动释放内存
+                playerView.reset()
                 result.success(0)
             }
             // 释放
             "release" -> {
-                alphaPlayer.releasePlayerController()
+                playerView.releasePlayerController()
                 result.success(0)
             }
             // 同步视图
             "attachView" -> {
-                alphaPlayer.attachView()
+                playerView.attachView()
                 result.success(0)
             }
             // 移除视图
             "detachView" -> {
-                alphaPlayer.detachView()
+                playerView.detachView()
                 result.success(0)
             }
         }
@@ -106,20 +110,21 @@ internal class NativeAlphaPlayer(
      * @param method 方法名称，唯一关系绑定，
      * @param arguments 参数或者数据 目前默认json
      */
-    private fun _onFlutterMethodCall(method: String, arguments: Any?) {
+    private fun callFlutterMethod(method: String, arguments: Any?) {
         handler.post {
             channel.invokeMethod(method, arguments)
         }
     }
 
-    //获取View
+    // 获取View
     override fun getView(): View? {
-        return alphaPlayer;
+        return playerView;
     }
 
-    //销毁View
+    // 销毁View
     override fun dispose() {
-        alphaPlayer.detachView()
-        alphaPlayer.releasePlayerController()
+        playerView.detachView()
+        playerView.releasePlayerController()
+        print("--- NativeAlphaPlayer dispose ---")
     }
 }

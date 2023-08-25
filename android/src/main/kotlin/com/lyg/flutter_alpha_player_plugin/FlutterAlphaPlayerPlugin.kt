@@ -6,7 +6,7 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 /** FlutterAlphaPlayerPlugin */
 class FlutterAlphaPlayerPlugin : FlutterPlugin {
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        //将flutter_alpha_player 注册到Flutterplugin上，并且同步到View上
+        // 将flutter_alpha_player 注册到Flutterplugin上，并且同步到View上
         flutterPluginBinding.platformViewRegistry.registerViewFactory("flutter_alpha_player", NativeAlphaPlayerFactory(flutterPluginBinding.binaryMessenger))
     }
 
