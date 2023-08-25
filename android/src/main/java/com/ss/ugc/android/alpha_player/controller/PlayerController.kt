@@ -397,6 +397,8 @@ class PlayerController(val context: Context, owner: LifecycleOwner, val alphaVid
                         PlayerState.STARTED, PlayerState.PAUSED -> {
                             mediaPlayer.pause()
                             playerState = PlayerState.PAUSED
+                            // 停止播放发送回调
+                            emitEndSignal()
                         }
 
                         else -> {}

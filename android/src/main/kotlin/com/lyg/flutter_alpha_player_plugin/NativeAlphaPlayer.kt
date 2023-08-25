@@ -19,7 +19,6 @@ internal class NativeAlphaPlayer(
         id: Int?,
         createParams: Map<String, Any>?) : MethodChannel.MethodCallHandler, PlatformView {
 
-    private var methodResult: MethodChannel.Result? = null
     private val mContext: Context? = context
     private lateinit var playerView: VideoView
     private lateinit var channel: MethodChannel
@@ -63,8 +62,8 @@ internal class NativeAlphaPlayer(
                 }
             }
             )
-            playerView.attachView()
 
+            playerView.attachView()
             channel = MethodChannel(binaryMessenger, "flutter_alpha_player_plugin_${id}")
             channel.setMethodCallHandler(this);
         }
@@ -72,7 +71,6 @@ internal class NativeAlphaPlayer(
 
     // MethodChannel 回调 Flutter-》Android
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        methodResult = result
         when (call.method) {
             // 播放视频
             "play" -> {
@@ -125,6 +123,6 @@ internal class NativeAlphaPlayer(
     override fun dispose() {
         playerView.detachView()
         playerView.releasePlayerController()
-        print("--- NativeAlphaPlayer dispose ---")
+        println("--- NativeAlphaPlayer dispose ---")
     }
 }
