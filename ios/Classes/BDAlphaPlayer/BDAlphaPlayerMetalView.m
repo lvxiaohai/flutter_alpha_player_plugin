@@ -93,7 +93,6 @@
 
 - (void)stop
 {
-    [self.audioPlayer pause];
     [self destroyMTKView];
 }
 
@@ -197,6 +196,8 @@
     [self.mtkView releaseDrawables];
     [self.metalRenderer drainSampleBufferQueue];
     self.mtkView = nil;
+    [self.audioPlayer pause];
+    self.audioPlayer = nil;
     self.hasDestroyed = YES;
 }
 

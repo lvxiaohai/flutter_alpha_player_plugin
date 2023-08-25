@@ -1,20 +1,14 @@
-//
-//  FlutterAlphaPlayerPluginFactory.swift
-//  AlphaPlayer
-//
-//  Created by ZhgSignorino on 2023/4/26.
-//
-
 import Flutter
 import UIKit
-class FlutterAlphaPlayerPluginFactory: NSObject, FlutterPlatformViewFactory {
+
+class NativeAlphaPlayerFactory: NSObject, FlutterPlatformViewFactory {
     /// 注册对象
-    var _pluginRegistrar: FlutterPluginRegistrar?
+    private var messenger: FlutterBinaryMessenger
 
     /// 自定义初始化方法
-    init(pluginRegistrar: FlutterPluginRegistrar) {
+    init(messenger: FlutterBinaryMessenger) {
+        self.messenger = messenger
         super.init()
-        _pluginRegistrar = pluginRegistrar
     }
 
     // MARK: - 实现FlutterPlatformViewFactory 代理方法
@@ -29,6 +23,6 @@ class FlutterAlphaPlayerPluginFactory: NSObject, FlutterPlatformViewFactory {
     /// @param viewId view的id
     /// @param args 初始化的参数
     func create(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?) -> FlutterPlatformView {
-        return FlutterAlphaViewPlugin(frame: frame, viewIdentifier: viewId, arguments: args as Any, pluginRegistrar: _pluginRegistrar!)
+        return NativeAlphaPlayer(frame: frame, viewIdentifier: viewId, arguments: args as Any, messenger: messenger)
     }
 }
