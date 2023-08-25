@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-typedef OnPlayCallback = void Function();
-typedef OnStopCallback = void Function();
-typedef OnErrorCallback = void Function(int code, String error);
+typedef Callback = void Function();
+typedef ErrorCallback = void Function(int code, String error);
 
 // 透明视频播放器控制器
 class AlphaPlayerController extends ChangeNotifier {
@@ -15,17 +14,20 @@ class AlphaPlayerController extends ChangeNotifier {
   // view创建完成
   PlatformViewCreatedCallback? onViewCreated;
   // 播放开始的回调
-  OnPlayCallback? onPlay;
+  Callback? onPlay;
   // 播放完成的回调
-  OnStopCallback? onStop;
+  Callback? onStop;
   // 播放错误的回调
-  OnErrorCallback? onError;
+  ErrorCallback? onError;
+  // widget组件dispose的回调
+  Callback? onDispose;
 
   AlphaPlayerController({
     this.onViewCreated,
     this.onPlay,
     this.onStop,
     this.onError,
+    this.onDispose,
   });
 
   /// 播放视频

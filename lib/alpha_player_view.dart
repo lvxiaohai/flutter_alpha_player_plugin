@@ -32,6 +32,7 @@ class _AlphaPlayerViewState extends State<AlphaPlayerView> {
 
   @override
   void dispose() {
+    widget.controller.onDispose?.call();
     widget.controller.removeListener(_onController);
     methodChannel?.setMethodCallHandler(null);
     super.dispose();
